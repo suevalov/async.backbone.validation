@@ -169,7 +169,7 @@ Backbone.Validation = (function (_) {
                         function (errorMessage) {
 
                             // Reject the master deferred.
-                            masterDeferred.reject(validator.msg);
+                            masterDeferred.reject(validator.msg || errorMessage);
 
                         }
                     );
