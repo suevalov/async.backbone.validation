@@ -313,11 +313,17 @@ Backbone.Validation = (function (_) {
                     var flattened = flatten(this.attributes);
 
                     if (_.isString(option)) {
-                        return !validateAttr(this, option, flattened[option], _.extend({}, this.attributes));
+                        validateAttr($.Deferred(), option, flattened[option], _.extend({}, this.attributes))
+                        .always(function (errorMessage) {
+                            if (errorMessage) {
+                                return false;
+                            }
+                            return true;
+                        });
                     }
                     if (_.isArray(option)) {
                         return _.reduce(option, function (memo, attr) {
-                            return memo && !validateAttr(this, attr, flattened[attr], _.extend({}, this.attributes));
+                            return memo && !validateAttr($.Deferred(), this, attr, this.attributes[attr], _.extend({}, this.attributes));
                         }, true, this);
                     }
                     if (option === true) {
